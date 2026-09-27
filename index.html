@@ -97,18 +97,25 @@ main { padding-inline: var(--gutter); overflow-x: clip; }
   display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 48px; align-items: end;
   border-bottom: 2px solid var(--line);
 }
-.intro { position: relative; --sky-h: 170px; }
-.intro-text { position: relative; z-index: 1; padding-bottom: calc(var(--sky-h) + 20px); }
-.skyline-pan {                       /* the row houses along the line, drifting left to right, faded at both ends */
-  position: absolute; left: 0; right: 0; bottom: 0; height: var(--sky-h); overflow: hidden; z-index: 0; pointer-events: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+.intro { position: relative; --sky-h: clamp(260px, 36vw, 540px); }
+.intro-text { position: relative; z-index: 1; padding-bottom: 48px; }
+.intro-text .pitch, .intro-text .kicker { text-shadow: 0 1px 2px var(--night), 0 0 10px var(--night), 0 0 22px var(--night); }
+.intro-text .pitch { position: relative; }
+.intro-text .pitch::before {         /* a soft wash of night behind the paragraphs, so lit windows don't fight the words */
+  content: ""; position: absolute; inset: -36px -64px; z-index: -1;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(7, 3, 12, .82), rgba(7, 3, 12, .62) 55%, transparent 100%);
+}
+.skyline-pan {                       /* the row houses along the line, screen-wide, drifting left to right behind the text;
+                                        the top melts into the night so the taller blocks rise toward the headline */
+  position: absolute; left: calc(50% - 50vw); width: 100vw; bottom: 0; height: var(--sky-h); overflow: hidden; z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 38%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 38%);
 }
 .skyline-pan::before {
   --tile: calc(var(--sky-h) * 1920 / 510);   /* one tile's width at this height */
   content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1 * var(--tile)); right: 0;
   background: url(img/skyline_tile.png) repeat-x left bottom / auto 100%; image-rendering: pixelated;
-  animation: pan 60s linear infinite;
+  animation: pan 110s linear infinite;
 }
 @keyframes pan { to { transform: translateX(var(--tile)); } }
 @media (prefers-reduced-motion: reduce) { .masthead .sun, .skyline-pan::before { animation: none; } }
@@ -130,7 +137,7 @@ main { padding-inline: var(--gutter); overflow-x: clip; }
 }
 @media (max-width: 759px) {
   .intro { grid-template-columns: 1fr; }
-  .intro { --sky-h: 100px; }
+  .intro { --sky-h: 200px; }
   .intro-text { padding-bottom: 24px; }
   .intro-cat { width: min(62%, 240px); justify-self: end; }
 }
