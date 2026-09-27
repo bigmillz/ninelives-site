@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nine Lives on Knickerbocker</title>
+<meta name="description" content="A loud, gold-plated first-person shooter set in Bushwick after dark. Save the bodega cats from KNCKRBCKR CAPITAL. Free for Apple silicon Macs.">
+<meta name="theme-color" content="#07030c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nine Lives on Knickerbocker">
+<meta property="og:description" content="Save the bodega cats of Bushwick from KNCKRBCKR CAPITAL. Nine lives, seven rounds.">
+<meta property="og:image" content="https://9lives.millertechnology.net/img/og.jpg">
+<meta property="og:url" content="https://9lives.millertechnology.net/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Semi+Condensed:ital,wght@0,400;0,500;0,700;1,500&display=swap">
+<style>
+/* NINE LIVES: one dark world, the title screen's. Colours come from art/gen.py and the in-game HUD. */
+:root {
+  color-scheme: dark;
+  --night: #07030c;       /* the sky's top */
+  --plum: #16060f;        /* panels */
+  --plum-2: #2a0718;      /* the sky's middle */
+  --line: #45162b;
+  --ember: #ff6a10;       /* the sky's horizon, the fire */
+  --flame: #ffd21a;
+  --glow: #ff2a00;        /* the logo's glow */
+  --soot: #1a0500;        /* every outline in the art */
+  --ink: #f6eadc;
+  --dim: #c2a6ad;
+  --hud-cream: #f6e097;   /* the HUD clock */
+  --hud-gold: #ffe47b;    /* HOOD CLEAR */
+  --hud-green: #96f196;   /* BLOCK CLEAR */
+  --hud-coral: #ff9168;   /* street names */
+  --hud-red: #ff5a4a;     /* OUT OF AMMO */
+  --bubble: #fbf7ee;
+  --display: Impact, "Anton", "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --body: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --hot: linear-gradient(180deg, #fffbd0 0%, #ffd21a 45%, #ff8a00 55%, #d11800 100%);
+  --sky: linear-gradient(180deg, #07030c 0%, #2a0718 45%, #8a1a08 80%, #ff6a10 100%);
+}
+* { box-sizing: border-box; }
+html { background: var(--night); scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--night); color: var(--ink);
+  font: 500 18px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--flame); }
+:focus-visible { outline: 3px solid var(--flame); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* ---------- type ---------- */
+.hud {
+  font: 400 15px/1.3 var(--display); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--hud-coral); margin: 0;
+  text-shadow: 2px 2px 0 var(--soot), -1px -1px 0 var(--soot), 1px -1px 0 var(--soot), -1px 1px 0 var(--soot);
+}
+.hud.cream { color: var(--hud-cream); }
+.hud.gold { color: var(--hud-gold); }
+.hud.green { color: var(--hud-green); }
+.hud.red { color: var(--hud-red); }
+.display {
+  font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .02em;
+  line-height: 1.02; margin: 0; text-wrap: balance;
+  display: inline-block; transform: skewX(-7deg);
+  background: var(--hot); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(2px 0 0 var(--soot)) drop-shadow(-2px 0 0 var(--soot)) drop-shadow(0 2px 0 var(--soot))
+          drop-shadow(0 -2px 0 var(--soot)) drop-shadow(3px 4px 0 var(--soot)) drop-shadow(0 0 12px rgba(255, 42, 0, .55));
+}
+h2.display { font-size: clamp(40px, 6.4vw, 84px); }
+h3 { margin: 0; }
+
+/* ---------- the masthead: the logo on its burst ---------- */
+.masthead { display: grid; justify-items: center; padding: max(20px, env(safe-area-inset-top, 0px)) var(--gutter) 0; }
+.masthead h1 { margin: 0; width: min(100%, 640px); }
+.masthead img { width: 100%; }
+.masthead .dl-btn { margin-top: clamp(-36px, -2.5vw, -12px); justify-items: center; text-align: center; }
+.dl-btn.soon.scroll { cursor: pointer; }
+
+/* ---------- sections ---------- */
+main { padding-inline: var(--gutter); overflow-x: clip; }
+.section { max-width: 1160px; margin: 0 auto; padding-block: clamp(64px, 9vw, 120px) 0; }
+.section-head { display: grid; gap: 14px; margin-bottom: 36px; }
+#the-game { padding-top: clamp(8px, 2vw, 28px); }
+
+/* the game */
+.intro {                             /* ends on the maroon line; the cat rises out of it */
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 48px; align-items: end;
+  border-bottom: 2px solid var(--line);
+}
+.intro-text { padding-bottom: 48px; }
+.kicker { font: 400 clamp(22px, 2.6vw, 30px)/1.1 var(--display); letter-spacing: .04em; color: var(--hud-cream); margin: 18px 0 0; text-shadow: 2px 2px 0 var(--soot); }
+.pitch { max-width: 62ch; margin-top: 26px; display: grid; gap: 16px; }
+.pitch p { margin: 0; }
+.pitch strong { color: var(--flame); font-weight: 700; }
+.intro-cat { position: relative; width: clamp(220px, 27vw, 360px); margin: 0; }
+.intro-cat::before {                  /* a backlight: orange behind him, fading out before its own edges */
+  content: ""; position: absolute; left: -32%; right: -32%; top: -22%; bottom: 0; z-index: 0;
+  background: radial-gradient(ellipse 50% 62% at 50% 60%,
+    rgba(255, 160, 30, .95) 0%, rgba(255, 120, 16, .85) 32%, rgba(245, 70, 0, .6) 55%, rgba(170, 30, 0, .3) 76%, rgba(90, 10, 0, .1) 90%, transparent 100%);
+}
+.intro-cat img {                     /* an orange glow hugging his outline, cut at the line he stands on */
+  position: relative; z-index: 1; width: 100%; image-rendering: pixelated;
+  filter: drop-shadow(0 0 3px rgba(255, 190, 60, 1)) drop-shadow(0 0 10px rgba(255, 138, 0, .95))
+          drop-shadow(0 0 28px rgba(255, 106, 16, .8)) drop-shadow(0 0 70px rgba(255, 42, 0, .55));
+  clip-path: inset(-160px -160px 0 -160px);
+}
+@media (max-width: 759px) {
+  .intro { grid-template-columns: 1fr; }
+  .intro-text { padding-bottom: 28px; }
+  .intro-cat { width: min(62%, 240px); justify-self: end; }
+}
+
+.features {
+  list-style: none; margin: 0; padding: 36px 0 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 40px;
+}
+.features li { display: grid; gap: 10px; align-content: start; }
+.features p { margin: 0; }
+.features .hud { font-size: 17px; min-height: 2.6em; }
+.features p:not(.hud) { color: var(--dim); }
+@media (max-width: 959px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 599px) { .features { grid-template-columns: 1fr; } .features .hud { min-height: 0; } }
+
+.overheard { margin: 64px 0 0; }
+.overheard > .hud { margin-bottom: 20px; }
+.bubbles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start; }
+.bubble {
+  position: relative; margin: 0; background: var(--bubble); color: #140006;
+  border: 2px solid #140006; padding: 14px 16px;
+  font: 400 19px/1.2 var(--display); letter-spacing: .02em; text-align: center; text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--soot);
+}
+.bubble::after {                      /* the tail, pointing down at the thug */
+  content: ""; position: absolute; left: 50%; bottom: -12px; width: 20px; height: 12px; transform: translateX(-50%);
+  background: #140006; clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.bubble:nth-child(2) { margin-top: 26px; }
+.bubble:nth-child(3) { margin-top: 10px; }
+@media (max-width: 759px) { .bubbles { grid-template-columns: 1fr; gap: 26px; } .bubble:nth-child(n) { margin-top: 0; } }
+
+/* screenshots */
+.shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.shot { display: grid; gap: 8px; text-decoration: none; margin: 0; }
+.shot img { width: 100%; height: auto; aspect-ratio: 1720 / 980; object-fit: cover; border: 2px solid var(--line); background: var(--plum); transition: border-color .15s, transform .15s; }
+.shot:hover img, .shot:focus-visible img { border-color: var(--ember); transform: translateY(-2px); }
+.shot:focus-visible { outline: none; }
+.shot .hud { font-size: 14px; }
+.shot.lead { grid-column: span 2; grid-row: span 2; }
+.shot.lead .hud { font-size: 16px; }
+@media (max-width: 759px) {
+  .shots { grid-template-columns: 1fr; }
+  .shot.lead { grid-column: auto; grid-row: auto; }
+}
+
+/* the viewer */
+.viewer { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1720px); width: 100%; color: var(--ink); }
+.viewer::backdrop { background: rgba(7, 3, 12, .92); }
+.viewer figure { margin: 0; display: grid; gap: 12px; }
+.viewer img { width: 100%; height: auto; max-height: 82vh; object-fit: contain; border: 2px solid var(--line); background: #000; }
+.viewer-bar { display: flex; align-items: center; gap: 12px; }
+.viewer-bar .hud { flex: 1; font-size: 16px; }
+.viewer button {
+  font: 400 16px/1 var(--display); letter-spacing: .06em; color: var(--ink); background: var(--plum-2);
+  border: 2px solid var(--line); padding: 10px 14px; cursor: pointer;
+}
+.viewer button:hover { border-color: var(--ember); color: var(--flame); }
+
+/* download */
+.download { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px 48px; align-items: start; }
+.dl-panel {
+  position: relative; background: var(--plum); border: 2px solid var(--line);
+  padding: clamp(24px, 4vw, 44px); display: grid; gap: 24px; justify-items: start;
+}
+.meow { position: absolute; top: -42px; right: -12px; width: 128px; image-rendering: pixelated; }
+.dl-btn {
+  display: inline-grid; gap: 4px; text-decoration: none; text-align: left;
+  background: var(--hot); color: var(--soot); border: 3px solid var(--soot);
+  padding: 16px 26px 14px; box-shadow: 6px 6px 0 var(--soot);
+  transition: transform .12s, box-shadow .12s, filter .12s;
+}
+.dl-btn:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--soot), 0 0 28px rgba(255, 42, 0, .6); }
+.dl-btn:active { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--soot); }
+.dl-main { font: 400 clamp(28px, 3.4vw, 40px)/1 var(--display); letter-spacing: .03em; }
+.dl-sub { font: 400 15px/1 var(--display); letter-spacing: .08em; }
+.dl-btn.soon { background: var(--plum-2); color: var(--dim); border-color: var(--line); box-shadow: 6px 6px 0 #000; cursor: default; }
+.dl-btn.soon:hover { transform: none; box-shadow: 6px 6px 0 #000; }
+.dl-note { margin: -8px 0 0; color: var(--dim); max-width: 44ch; }
+.reqs { margin: 0; display: grid; gap: 0; width: 100%; border-top: 2px solid var(--line); }
+.reqs div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.reqs dt { font: 400 15px/1.5 var(--display); letter-spacing: .07em; color: var(--hud-cream); }
+.reqs dd { margin: 0; }
+.dl-side { display: grid; gap: 18px; }
+.dl-side .hud { font-size: 18px; }
+.steps { margin: 0 0 16px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 10px; }
+.steps li::before {
+  content: counter(s); font: 400 24px/1.1 var(--display); color: var(--soot); background: var(--flame);
+  width: 1.5em; height: 1.5em; display: grid; place-items: center; transform: skewX(-7deg);
+}
+.steps b, .fix b { color: var(--ink); font-weight: 700; }
+.fix { margin: -4px 0 16px; color: var(--dim); font-size: 16px; }
+.fix code { font: 500 14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; color: var(--hud-cream); background: var(--plum); border: 1px solid var(--line); padding: 2px 6px; overflow-wrap: anywhere; }
+.keys { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+.keys div { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.keys dt { color: var(--dim); }
+.keys dd { margin: 0; display: flex; gap: 5px; }
+kbd {
+  font: 400 15px/1 var(--display); letter-spacing: .05em; color: var(--ink);
+  background: var(--plum-2); border: 2px solid var(--line); border-bottom-width: 4px; padding: 6px 8px 4px; min-width: 2em; text-align: center;
+}
+@media (max-width: 859px) { .download { grid-template-columns: 1fr; } }
+@media (max-width: 479px) { .keys { grid-template-columns: 1fr; } .reqs div { grid-template-columns: 1fr; gap: 2px; } .meow { width: 96px; right: -8px; top: -38px; } }
+
+/* ---------- the foot: the title screen's skyline, on fire ---------- */
+.foot { position: relative; margin-top: clamp(80px, 10vw, 140px); background: var(--sky); overflow: hidden; }
+.foot-inner {
+  position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 72px var(--gutter) 0;
+  display: grid; justify-items: center; gap: 14px; text-align: center;
+}
+.foot-logo { width: min(360px, 76%); }
+.tip { font: 400 clamp(17px, 2vw, 22px)/1.2 var(--display); letter-spacing: .05em; color: var(--hud-cream); margin: 0; text-shadow: 2px 2px 0 var(--soot); text-wrap: balance; }
+.credit { margin: 0; color: var(--ink); max-width: 60ch; font-size: 16px; text-shadow: 1px 1px 0 var(--soot); }
+.foot-sky { width: 100%; height: auto; margin-top: -8px; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+
+<header class="masthead" id="top">
+  <h1><img src="img/logo.png" alt="Nine Lives on Knickerbocker" width="1440" height="960"></h1>
+  <!-- Follows the download button below: the same file once it's hosted, until then a jump to the download section. -->
+  <a class="dl-btn" id="dl-top" href="#download">
+    <span class="dl-main">DOWNLOAD FOR MAC</span>
+    <span class="dl-sub">18 GB &nbsp;//&nbsp; FREE</span>
+  </a>
+</header>
+
+<main>
+
+<section class="section" id="the-game" aria-labelledby="game-h">
+  <div class="intro">
+    <div class="intro-text">
+      <p class="hud">BUSHWICK, BROOKLYN &nbsp;//&nbsp; AFTER DARK</p>
+      <h2 class="display" id="game-h" style="margin-top:14px">KNCKRBCKR CAPITAL is buying Bushwick.</h2>
+      <p class="kicker">THE CATS AREN'T FOR SALE.</p>
+      <div class="pitch">
+        <p><strong>Nine Lives on Knickerbocker</strong> is a first-person shooter set on the streets of Bushwick at night. A landlord outfit called KNCKRBCKR CAPITAL has put a crew on every block, and the bodega cats are next. You have a golden Desert Eagle, seven rounds, and nine lives.</p>
+        <p>Take out a block's whole crew and the block is yours. Clear every block in a hood and it pays out a special gun. It's loud, it's gold-plated, and it has opinions about rent.</p>
+      </div>
+    </div>
+    <figure class="intro-cat">
+      <img src="img/cat_guns.png" alt="The black bodega cat in mirrored shades and a gold chain, holding two golden Desert Eagles" width="750" height="894">
+    </figure>
+  </div>
+
+  <ul class="features">
+    <li>
+      <p class="hud gold">GOLDEN DEAGLE &nbsp;//&nbsp; NINE LIVES, SEVEN ROUNDS</p>
+      <p>You start with a golden Desert Eagle. Find the second one and a single click fires both.</p>
+    </li>
+    <li>
+      <p class="hud green">BLOCK CLEAR &nbsp;//&nbsp; 1 OF 147</p>
+      <p>Only the crew counts. Drop every one of them and the block stays yours. Your first two hoods each pay out a special gun.</p>
+    </li>
+    <li>
+      <p class="hud cream">BODEGA +10% HEALTH &nbsp;//&nbsp; CHOPPED CHEESE, NO NOTES</p>
+      <p>Walk into any bodega to heal, once a minute. The cat says you're good.</p>
+    </li>
+    <li>
+      <p class="hud">SMOKE SHOP &nbsp;//&nbsp; +50% SPEED &nbsp;+25% DAMAGE &nbsp;//&nbsp; 30 SECONDS</p>
+      <p>A smoke break makes you faster and makes every round hit harder for half a minute.</p>
+    </li>
+    <li>
+      <p class="hud red">OUT OF AMMO &nbsp;//&nbsp; GRAB A TRASH BAG</p>
+      <p>The curb is full of weapons. Swing a trash bag until you find more rounds.</p>
+    </li>
+    <li>
+      <p class="hud gold">TOURIST &nbsp;//&nbsp; TRANSPLANT &nbsp;//&nbsp; LOCAL &nbsp;//&nbsp; BORN HERE</p>
+      <p>Four difficulties. On Born Here the crews are faster, meaner, and they know every shortcut.</p>
+    </li>
+  </ul>
+
+  <div class="overheard">
+    <p class="hud cream">OVERHEARD ON KNICKERBOCKER</p>
+    <div class="bubbles">
+      <p class="bubble">You ain't from here. You're from a podcast.</p>
+      <p class="bubble">Nice gold gun. What are you, a rapper or a landlord?</p>
+      <p class="bubble">Hey, Nine Lives! Let's see if we can make it eight.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="screenshots" aria-labelledby="shots-h">
+  <div class="section-head">
+    <h2 class="display" id="shots-h">Screenshots</h2>
+    <p class="hud">STRAIGHT OUT OF THE ENGINE &nbsp;//&nbsp; NO BULLSHOTS</p>
+  </div>
+  <div class="shots">
+    <a class="shot lead" href="img/shots/13_hood_clear.jpg" data-cap="HOOD CLEAR  //  MYRTLE &amp; STOCKHOLM"><img src="img/shots/13_hood_clear.jpg" alt="Two golden pistols on a night street under a gold HOOD CLEAR banner" width="1720" height="980"><span class="hud">HOOD CLEAR &nbsp;//&nbsp; MYRTLE &amp; STOCKHOLM</span></a>
+    <a class="shot" href="img/shots/08_knickerbocker.jpg" data-cap="THAMES &amp; KNICKERBOCKER  //  11:16 PM"><img src="img/shots/08_knickerbocker_t.jpg" alt="Knickerbocker Avenue at night, scaffolding on the left and a deli sign on the right" width="860" height="490" loading="lazy"><span class="hud">THAMES &amp; KNICKERBOCKER &nbsp;//&nbsp; 11:16 PM</span></a>
+    <a class="shot" href="img/shots/26_grenade_glow.jpg" data-cap="TROUTMAN &amp; WYCKOFF  //  HE WANTS YOUR PARKING SPOT"><img src="img/shots/26_grenade_glow_t.jpg" alt="A thug charging down the street shouting about a parking spot" width="860" height="490" loading="lazy"><span class="hud">TROUTMAN &amp; WYCKOFF &nbsp;//&nbsp; HE WANTS YOUR PARKING SPOT</span></a>
+    <a class="shot" href="img/shots/06d_grenade.jpg" data-cap="DEKALB &amp; IRVING  //  TWO DEAGLES"><img src="img/shots/06d_grenade_t.jpg" alt="Dual golden Desert Eagles aimed at a thug by a lit shop front" width="860" height="490" loading="lazy"><span class="hud">DEKALB &amp; IRVING &nbsp;//&nbsp; TWO DEAGLES</span></a>
+    <a class="shot" href="img/shots/18_trash.jpg" data-cap="DEKALB &amp; KNICKERBOCKER  //  TRASH BAG"><img src="img/shots/18_trash_t.jpg" alt="Swinging a black trash bag at a thug in a red tracksuit" width="860" height="490" loading="lazy"><span class="hud">DEKALB &amp; KNICKERBOCKER &nbsp;//&nbsp; TRASH BAG</span></a>
+    <a class="shot" href="img/shots/24_corner.jpg" data-cap="STARR &amp; KNICKERBOCKER  //  11:40 PM"><img src="img/shots/24_corner_t.jpg" alt="A wet corner at night with neon shop signs reflected in the street" width="860" height="490" loading="lazy"><span class="hud">STARR &amp; KNICKERBOCKER &nbsp;//&nbsp; 11:40 PM</span></a>
+    <a class="shot" href="img/shots/19b_laser.jpg" data-cap="THE UNTER LASER  //  A HOOD CLEAR PAYS"><img src="img/shots/19b_laser_t.jpg" alt="A cyan laser beam cutting down a dark street past scaffolding" width="860" height="490" loading="lazy"><span class="hud">THE UNTER LASER &nbsp;//&nbsp; A HOOD CLEAR PAYS</span></a>
+    <a class="shot" href="img/shots/17a_empty.jpg" data-cap="DEKALB &amp; IRVING  //  SMOKE BREAK"><img src="img/shots/17a_empty_t.jpg" alt="Out of ammo on a bright block of shops, a thug waiting in the street" width="860" height="490" loading="lazy"><span class="hud">DEKALB &amp; IRVING &nbsp;//&nbsp; SMOKE BREAK</span></a>
+    <a class="shot" href="img/shots/09c_map_late.jpg" data-cap="TAB  //  ALL 147 BLOCKS"><img src="img/shots/09c_map_late_t.jpg" alt="The Tab map of Bushwick with every block marked" width="860" height="490" loading="lazy"><span class="hud">TAB &nbsp;//&nbsp; ALL 147 BLOCKS</span></a>
+  </div>
+</section>
+
+<section class="section download" id="download" aria-labelledby="dl-h">
+  <div class="dl-panel">
+    <img class="meow" src="img/badge_meow.png" alt="Rated M for Meow" width="360" height="360">
+    <h2 class="display" id="dl-h">Download</h2>
+    <!-- Put the download's URL in href (it's "#download" until the file is hosted). -->
+    <a class="dl-btn" id="dl" href="#download">
+      <span class="dl-main">DOWNLOAD FOR MAC</span>
+      <span class="dl-sub">18 GB &nbsp;//&nbsp; ZIP &nbsp;//&nbsp; FREE</span>
+    </a>
+    <p class="dl-note" id="dl-soon" hidden>The download goes up soon. It's a big one.</p>
+    <dl class="reqs">
+      <div><dt>MAC</dt><dd>Apple silicon (M1 or newer)</dd></div>
+      <div><dt>MACOS</dt><dd>14 Sonoma or newer</dd></div>
+      <div><dt>DISK SPACE</dt><dd>18 GB, plus 18 GB more while it unzips</dd></div>
+      <div><dt>BUILT ON</dt><dd>An M4 Pro MacBook Pro</dd></div>
+    </dl>
+  </div>
+
+  <div class="dl-side">
+    <h3 class="hud">FIRST LAUNCH</h3>
+    <ol class="steps">
+      <li><span>Unzip it and drag <b>NINE LIVES</b> into Applications.</span></li>
+      <li><span>Open it. The game isn't notarized by Apple yet, so macOS says it can't check it for malware. Click <b>Done</b>.</span></li>
+      <li><span>Open <b>System Settings</b>, go to <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. You only do this once.</span></li>
+    </ol>
+    <p class="fix">If macOS says the app is damaged, run this in Terminal, then open it again: <code>xattr -dr com.apple.quarantine "/Applications/NINE LIVES.app"</code></p>
+
+    <h3 class="hud">CONTROLS</h3>
+    <dl class="keys">
+      <div><dt>Move</dt><dd><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dd></div>
+      <div><dt>Shoot</dt><dd><kbd>CLICK</kbd></dd></div>
+      <div><dt>Run</dt><dd><kbd>SHIFT</kbd></dd></div>
+      <div><dt>Guns</dt><dd><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd></dd></div>
+      <div><dt>Map</dt><dd><kbd>TAB</kbd></dd></div>
+      <div><dt>Pause</dt><dd><kbd>ESC</kbd></dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <img class="foot-logo" src="img/logo_text.png" alt="Nine Lives on Knickerbocker" width="1200" height="420" loading="lazy">
+    <p class="tip">TIP: KNCKRBCKR CAPITAL CAN'T BUY WHAT ISN'T FOR SALE.</p>
+    <p class="credit">A parody, made with Unreal Engine 5 and Epic Games' City Sample. No real cats were harmed.</p>
+  </div>
+  <img class="foot-sky" src="img/skyline.png" alt="" width="1920" height="342" loading="lazy">
+</footer>
+
+<dialog class="viewer" id="viewer" aria-label="Screenshot">
+  <figure>
+    <img src="" alt="">
+    <div class="viewer-bar">
+      <p class="hud" id="viewer-cap"></p>
+      <button type="button" class="prev" aria-label="Previous screenshot">&larr; PREV</button>
+      <button type="button" class="next" aria-label="Next screenshot">NEXT &rarr;</button>
+      <button type="button" class="close" aria-label="Close">ESC</button>
+    </div>
+  </figure>
+</dialog>
+
+<script>
+(() => {
+  // Screenshots open large; arrows step through them.
+  const dlg = document.getElementById('viewer');
+  const shots = [...document.querySelectorAll('.shot')];
+  const vImg = dlg.querySelector('img'), vCap = document.getElementById('viewer-cap');
+  let cur = 0;
+  const show = i => {
+    cur = (i + shots.length) % shots.length;
+    vImg.src = shots[cur].href;
+    vImg.alt = shots[cur].querySelector('img').alt;
+    vCap.textContent = shots[cur].dataset.cap;
+  };
+  shots.forEach((a, i) => a.addEventListener('click', e => {
+    if (!dlg.showModal) return;
+    e.preventDefault(); show(i); dlg.showModal();
+  }));
+  dlg.querySelector('.prev').addEventListener('click', () => show(cur - 1));
+  dlg.querySelector('.next').addEventListener('click', () => show(cur + 1));
+  dlg.querySelector('.close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') show(cur - 1);
+    if (e.key === 'ArrowRight') show(cur + 1);
+  });
+
+  // Until the file is hosted the button says so instead of pretending.
+  const dl = document.getElementById('dl'), top = document.getElementById('dl-top');
+  if (dl.getAttribute('href') !== '#download') top.href = dl.href;
+  else {
+    top.classList.add('soon', 'scroll');
+    top.querySelector('.dl-main').textContent = 'COMING SOON';
+    top.querySelector('.dl-sub').innerHTML = 'MAC &nbsp;//&nbsp; 18 GB &nbsp;//&nbsp; FREE';
+    dl.classList.add('soon');
+    dl.setAttribute('aria-disabled', 'true');
+    dl.querySelector('.dl-main').textContent = 'COMING SOON';
+    document.getElementById('dl-soon').hidden = false;
+    dl.addEventListener('click', e => e.preventDefault());
+  }
+})();
+</script>
+</body>
+</html>
