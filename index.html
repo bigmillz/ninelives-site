@@ -78,8 +78,11 @@ h3 { margin: 0; }
 
 /* ---------- the masthead: the logo on its burst ---------- */
 .masthead { display: grid; justify-items: center; padding: max(20px, env(safe-area-inset-top, 0px)) var(--gutter) 0; }
-.masthead h1 { margin: 0; width: min(100%, 640px); }
-.masthead img { width: 100%; }
+.masthead h1 { margin: 0; width: min(100%, 640px); position: relative; aspect-ratio: 3 / 2; }
+/* the logo in two layers, placed as art/gen.py draws it (logo.png): the burst turns slowly behind the lettering */
+.masthead .sun { position: absolute; left: 14.583%; top: -3.125%; width: 70.833%; animation: turn 90s linear infinite; }
+.masthead .lockup { position: absolute; left: 8.333%; top: 20.625%; width: 83.333%; }
+@keyframes turn { to { transform: rotate(1turn); } }
 .masthead .dl-btn { margin-top: clamp(-36px, -2.5vw, -12px); justify-items: center; text-align: center; }
 .dl-btn.soon.scroll { cursor: pointer; }
 
@@ -94,12 +97,26 @@ main { padding-inline: var(--gutter); overflow-x: clip; }
   display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 48px; align-items: end;
   border-bottom: 2px solid var(--line);
 }
-.intro-text { padding-bottom: 48px; }
+.intro { position: relative; --sky-h: 170px; }
+.intro-text { position: relative; z-index: 1; padding-bottom: calc(var(--sky-h) + 20px); }
+.skyline-pan {                       /* the row houses along the line, drifting left to right, faded at both ends */
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--sky-h); overflow: hidden; z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.skyline-pan::before {
+  --tile: calc(var(--sky-h) * 1920 / 510);   /* one tile's width at this height */
+  content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1 * var(--tile)); right: 0;
+  background: url(img/skyline_tile.png) repeat-x left bottom / auto 100%; image-rendering: pixelated;
+  animation: pan 60s linear infinite;
+}
+@keyframes pan { to { transform: translateX(var(--tile)); } }
+@media (prefers-reduced-motion: reduce) { .masthead .sun, .skyline-pan::before { animation: none; } }
 .kicker { font: 400 clamp(22px, 2.6vw, 30px)/1.1 var(--display); letter-spacing: .04em; color: var(--hud-cream); margin: 18px 0 0; text-shadow: 2px 2px 0 var(--soot); }
 .pitch { max-width: 62ch; margin-top: 26px; display: grid; gap: 16px; }
 .pitch p { margin: 0; }
 .pitch strong { color: var(--flame); font-weight: 700; }
-.intro-cat { position: relative; width: clamp(220px, 27vw, 360px); margin: 0; }
+.intro-cat { position: relative; z-index: 2; width: clamp(220px, 27vw, 360px); margin: 0; }
 .intro-cat::before {                  /* a backlight: orange behind him, fading out before its own edges */
   content: ""; position: absolute; left: -32%; right: -32%; top: -22%; bottom: 0; z-index: 0;
   background: radial-gradient(ellipse 50% 62% at 50% 60%,
@@ -113,7 +130,8 @@ main { padding-inline: var(--gutter); overflow-x: clip; }
 }
 @media (max-width: 759px) {
   .intro { grid-template-columns: 1fr; }
-  .intro-text { padding-bottom: 28px; }
+  .intro { --sky-h: 100px; }
+  .intro-text { padding-bottom: 24px; }
   .intro-cat { width: min(62%, 240px); justify-self: end; }
 }
 
@@ -233,7 +251,7 @@ kbd {
 <body>
 
 <header class="masthead" id="top">
-  <h1><img src="img/logo.png" alt="Nine Lives on Knickerbocker" width="1440" height="960"></h1>
+  <h1><img class="sun" src="img/sun.png" alt="" width="1020" height="1020"><img class="lockup" src="img/logo_text.png" alt="Nine Lives on Knickerbocker" width="1200" height="420"></h1>
   <!-- Follows the download button below: the same file once it's hosted, until then a jump to the download section. -->
   <a class="dl-btn" id="dl-top" href="#download">
     <span class="dl-main">DOWNLOAD FOR MAC</span>
@@ -254,6 +272,7 @@ kbd {
         <p>Take out a block's whole crew and the block is yours. Clear every block in a hood and it pays out a special gun. It's loud, it's gold-plated, and it has opinions about rent.</p>
       </div>
     </div>
+    <div class="skyline-pan" aria-hidden="true"></div>
     <figure class="intro-cat">
       <img src="img/cat_guns.png" alt="The black bodega cat in mirrored shades and a gold chain, holding two golden Desert Eagles" width="750" height="894">
     </figure>

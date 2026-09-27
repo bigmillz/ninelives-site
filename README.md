@@ -1,6 +1,7 @@
 # NINE LIVES website
 
-- `index.html`: the whole page (CSS and JS inline): the logo, the pitch with the cat rising out of its bottom line,
+- `index.html`: the whole page (CSS and JS inline): the logo (its sun turns behind the lettering), the pitch with
+  the cat rising out of its bottom line and a skyline drifting along it,
   the features, screenshots, download, and the title screen's burning skyline as the footer.
 - `img/`: everything it shows, made by `python3 make_site.py` (~20 s): the logo, the cat with his guns, the
   skyline, the badge and the tab icon are drawn by `../art/gen.py` and dithered by `../art/dither.html`, so they match the
@@ -19,7 +20,8 @@ signature). The data is already Oodle-compressed, so the zip is nearly as big as
 ## Hosting
 
 - The page: https://9lives.millertechnology.net, GitHub Pages from `main` of github.com/bigmillz/ninelives-site
-  (this folder; `CNAME` holds the domain). To update: `git commit -am "..." && git push`; live in about a minute.
+  (this folder; `CNAME` holds the domain). The repo was recreated 2026-09-27 to drop a history with Patrick's name
+  and email; the old one is `ninelives-site-old`, private. Never put his name or email in the site or its commits. To update: `git commit -am "..." && git push`; live in about a minute.
   DNS: a Cloudflare CNAME `9lives` -> `bigmillz.github.io`, DNS only (grey cloud) so GitHub can issue HTTPS.
 - The download: too big for GitHub (2 GiB per release file) or itch.io (2 GB by default, 4 GB on request).
   Plan: a Cloudflare R2 bucket on a millertechnology.net subdomain. R2 charges nothing for downloads; storage

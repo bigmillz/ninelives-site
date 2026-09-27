@@ -54,6 +54,20 @@ def skyline_strip():
     return gen.page(640, 114, "\n".join(b))
 
 
+def sun():
+    """The logo's burst alone, square and centred, so the page can turn it behind the lettering (same star as logo())."""
+    b = ['<polygon points="%s" fill="url(#boom)" opacity="0.9"/>' % gen.star(170, 170, 24, 158, 50, random.Random(21), 0.18)]
+    b.append('<circle cx="170" cy="170" r="62" fill="url(#boom)" filter="url(#blur6)"/>')
+    return gen.page(340, 340, "\n".join(b))
+
+
+def skyline_tile():
+    """Row houses in two depths (far plum blocks, near ones with lit windows), sky transparent; the page repeats it
+    sideways and pans it. Buildings cut at either edge just meet other buildings, so the seam doesn't show."""
+    b = [gen.skyline(random.Random(13), 170, far=True), gen.skyline(random.Random(17), 170)]
+    return gen.page(640, 170, "\n".join(b))
+
+
 def cat_guns():
     """The title screen's cat with his two gold Deagles, cut flat at the hoodie (y 190) so he can rise out of a line."""
     return gen.page(250, 298, gen.cat(125, 108, 1.0, guns=True))
@@ -114,6 +128,8 @@ if __name__ == "__main__":
             ("logo", logo_burst(), 480, 320, 3, 64, False),
             ("skyline", skyline_strip(), 640, 114, 3, 64, False),
             ("cat_guns", cat_guns(), 250, 298, 3, 64, False),
+            ("sun", sun(), 340, 340, 3, 64, False),
+            ("skyline_tile", skyline_tile(), 640, 170, 3, 64, False),
             ("badge_meow", gen.page(120, 120, gen.badge(60, 60, 50, ["RATED M", "FOR", "MEOW"], rot=-12)), 120, 120, 3, 16, False),
             ("cat_icon", cat_icon(), 180, 180, 0, 0, False)]
     for j in jobs:
